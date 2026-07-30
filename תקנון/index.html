@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בית הספר יסודי התורה • רעננה</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-deep: #1a2952;
+            --navy: #253c73;
+            --navy-mid: #3d5490;
+            --navy-light: #6b7fb0;
+            --gold: #c9a961;
+            --gold-light: #e0c988;
+            --cream: #faf7f0;
+            --paper: #ffffff;
+            --border: #d4c9a8;
+            --text: #2a2a2a;
+            --text-muted: #5a5a5a;
+        }
+        
+        * { box-sizing: border-box; }
+        
+        body {
+            font-family: 'Assistant', sans-serif;
+            line-height: 1.9;
+            margin: 0;
+            padding: 0;
+            background: var(--cream);
+            color: var(--text);
+            font-size: 17px;
+            font-weight: 400;
+        }
+        
+        body.lang-fr, body.lang-en {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Cormorant Garamond', 'Assistant', serif;
+        }
+        
+        body.lang-fr .container, body.lang-fr .header, body.lang-fr .footer,
+        body.lang-en .container, body.lang-en .header, body.lang-en .footer {
+            direction: ltr;
+        }
+        
+        .serif {
+            font-family: 'Amiri', 'Assistant', serif;
+            font-weight: 700;
+        }
+        
+        body.lang-fr .serif, body.lang-en .serif {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+        }
+        
+        /* Language toggle - 3 buttons */
+        .lang-toggle {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 200;
+            background: var(--paper);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            padding: 5px;
+            display: flex;
+            gap: 3px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+        }
+        
+        .lang-toggle button {
+            border: none;
+            background: transparent;
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.88em;
+            font-weight: 600;
+            color: var(--navy);
+            transition: all 0.3s ease;
+        }
+        
+        .lang-toggle button.active {
+            background: var(--navy-deep);
+            color: var(--gold-light);
+        }
+        
+        /* Language content visibility */
+        .lang-he { display: block; }
+        .lang-fr-content, .lang-en-content { display: none; }
+        body.lang-fr .lang-he, body.lang-fr .lang-en-content { display: none; }
+        body.lang-fr .lang-fr-content { display: block; }
+        body.lang-en .lang-he, body.lang-en .lang-fr-content { display: none; }
+        body.lang-en .lang-en-content { display: block; }
+        
+        /* Draft indicator for English translation */
+        .draft-notice {
+            background: linear-gradient(135deg, #fff8dc 0%, #fffaed 100%);
+            border: 1px solid var(--gold);
+            padding: 12px 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 0.9em;
+            color: #856404;
+            border-radius: 4px;
+        }
+        
+        .to-translate {
+            background: #fff3cd;
+            border-left: 4px solid #ffa500;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-style: italic;
+            color: #856404;
+            border-radius: 4px;
+        }
+        
+        .to-translate::before {
+            content: '⚠️ [À traduire / To translate] ';
+            font-weight: bold;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: var(--navy-deep);
+            color: var(--gold-light);
+            text-align: center;
+            padding: 8px 20px;
+            font-size: 0.85em;
+            letter-spacing: 2px;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--paper);
+            border-bottom: 3px solid var(--gold);
+            padding: 40px 20px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header .logo {
+            max-width: 160px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-family: 'Amiri', serif;
+            color: var(--navy-deep);
+            font-size: 3em;
+            font-weight: 700;
+            margin: 0 0 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        body.lang-fr .header h1, body.lang-en .header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2em;
+        }
+        
+        .header .tagline {
+            color: var(--gold);
+            font-family: 'Amiri', serif;
+            font-size: 1.25em;
+            font-weight: 400;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+        
+        body.lang-fr .header .tagline, body.lang-en .header .tagline {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .header .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0 10px;
+        }
+        
+        .header .divider-symbol {
+            color: var(--gold);
+            font-size: 1.3em;
+        }
+        
+        .header .divider::before,
+        .header .divider::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+        }
+        
+        .header .subtitle {
+            color: var(--text-muted);
+            font-size: 1.05em;
+            font-family: 'Amiri', serif;
+            font-weight: 400;
+        }
+        
+        body.lang-fr .header .subtitle, body.lang-en .header .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        /* Navigation */
+        .nav-bar {
+            background: var(--navy-deep);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .nav-container a {
+            color: var(--gold-light);
+            text-decoration: none;
+            padding: 15px 22px;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-container a:hover {
+            color: var(--paper);
+            border-bottom-color: var(--gold);
+            background: rgba(201, 169, 97, 0.1);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 0;
+            background: var(--paper);
+            box-shadow: 0 0 40px rgba(26, 41, 82, 0.08);
+        }
+        
+        .content {
+            padding: 50px 60px;
+        }
+        
+        .bsd {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: 1.2em;
+            color: var(--navy);
+            margin: 0 0 40px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e8e2d0;
+        }
+        
+        .section:last-of-type { border-bottom: none; }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            border-radius: 50%;
+            color: var(--paper);
+            box-shadow: 0 4px 12px rgba(201, 169, 97, 0.35);
+            border: 2px solid var(--paper);
+            outline: 1px solid var(--gold);
+        }
+        
+        .section-icon svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--paper);
+        }
+        
+        .section h2 {
+            font-family: 'Amiri', serif;
+            color: var(--navy-deep);
+            font-size: 2em;
+            font-weight: 700;
+            margin: 0;
+            flex: 1;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gold);
+        }
+        
+        body.lang-fr .section h2, body.lang-en .section h2 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .section h3 {
+            font-family: 'Amiri', serif;
+            color: var(--navy);
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            padding-right: 15px;
+            border-right: 4px solid var(--gold);
+        }
+        
+        body.lang-fr .section h3, body.lang-en .section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            padding-right: 0;
+            padding-left: 15px;
+            border-right: none;
+            border-left: 4px solid var(--gold);
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            text-align: justify;
+            color: var(--text);
+            font-size: 1.05em;
+        }
+        
+        .section strong {
+            color: var(--navy-deep);
+            font-weight: 700;
+        }
+        
+        /* Vision Box */
+        .vision-box {
+            background: linear-gradient(135deg, var(--cream) 0%, #f5efdf 100%);
+            border: 1px solid var(--border);
+            border-right: 5px solid var(--gold);
+            padding: 35px 40px;
+            margin: 0;
+            position: relative;
+        }
+        
+        body.lang-fr .vision-box, body.lang-en .vision-box {
+            border-right: 1px solid var(--border);
+            border-left: 5px solid var(--gold);
+        }
+        
+        .vision-box h2 {
+            border-bottom: none;
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        
+        .vision-box::before {
+            content: '❦';
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: var(--gold);
+            font-size: 1.5em;
+        }
+        
+        .vision-box::after {
+            content: '❦';
+            position: absolute;
+            top: 15px;
+            left: 25px;
+            color: var(--gold);
+            font-size: 1.5em;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: #fdfaf0;
+            border: 1px solid var(--gold);
+            border-right: 4px solid var(--gold);
+            padding: 20px 25px;
+            margin: 25px 0;
+            font-family: 'Amiri', serif;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        
+        body.lang-fr .highlight-box, body.lang-en .highlight-box {
+            border-right: 1px solid var(--gold);
+            border-left: 4px solid var(--gold);
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .highlight-box p { margin: 0; }
+        
+        /* Dress Code */
+        .dress-code {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .dress-code-section {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .dress-code-section h4 {
+            font-family: 'Amiri', serif;
+            color: var(--paper);
+            background: var(--navy-deep);
+            text-align: center;
+            padding: 15px;
+            margin: 0;
+            font-size: 1.4em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border-bottom: 3px solid var(--gold);
+        }
+        
+        body.lang-fr .dress-code-section h4, body.lang-en .dress-code-section h4 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .dress-code-section .inner { padding: 22px 25px; }
+        .dress-code-section p { font-size: 0.98em; margin-bottom: 12px; }
+        
+        /* Rabbi Approval */
+        .rabbi-approval {
+            background: var(--navy-deep);
+            color: var(--paper);
+            text-align: center;
+            padding: 30px 40px;
+            margin: 40px 0;
+            position: relative;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+        }
+        
+        .rabbi-approval h2 {
+            font-family: 'Amiri', serif;
+            color: var(--gold-light);
+            border-bottom: none;
+            font-size: 1.5em;
+            margin: 0 0 10px;
+        }
+        
+        body.lang-fr .rabbi-approval h2, body.lang-en .rabbi-approval h2 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .rabbi-approval p {
+            color: var(--gold-light);
+            margin: 0;
+            font-family: 'Amiri', serif;
+            font-size: 1.15em;
+        }
+        
+        /* Forms */
+        .forms-wrapper {
+            background: linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
+            padding: 60px 40px;
+            margin: 0 -60px;
+        }
+        
+        .forms-intro { text-align: center; margin-bottom: 40px; }
+        
+        .forms-intro h2 {
+            font-family: 'Amiri', serif;
+            color: var(--navy-deep);
+            font-size: 2.4em;
+            margin: 0 0 15px;
+            font-weight: 700;
+        }
+        
+        .forms-intro .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .forms-intro .divider::before,
+        .forms-intro .divider::after {
+            content: '';
+            width: 80px;
+            height: 1px;
+            background: var(--gold);
+        }
+        
+        .forms-intro p {
+            color: var(--text-muted);
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-container {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            padding: 45px 50px;
+            margin: 30px 0;
+            box-shadow: 0 4px 20px rgba(26, 41, 82, 0.06);
+        }
+        
+        .form-container h3 {
+            font-family: 'Amiri', serif;
+            color: var(--navy-deep);
+            border-right: none;
+            padding-right: 0;
+            font-size: 1.9em;
+            margin-top: 0;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .form-container .form-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 1em;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .form-container h4 {
+            font-family: 'Amiri', serif;
+            color: var(--navy);
+            font-size: 1.25em;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: 1px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--navy-deep);
+            font-size: 1em;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="tel"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            background: var(--paper);
+            font-family: 'Assistant', sans-serif;
+            font-size: 1em;
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(37, 60, 115, 0.1);
+        }
+        
+        .form-group textarea { min-height: 90px; resize: vertical; }
+        
+        .form-group.checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: var(--cream);
+            padding: 15px 18px;
+            border-right: 3px solid var(--gold);
+        }
+        
+        .form-group.checkbox-group input[type="checkbox"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--navy);
+            cursor: pointer;
+        }
+        
+        .form-group.checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+        
+        .radio-group label {
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            background: var(--paper);
+            transition: all 0.2s ease;
+            margin-bottom: 0;
+        }
+        
+        .radio-group label:hover {
+            border-color: var(--navy);
+            background: var(--cream);
+        }
+        
+        .radio-group input[type="radio"] {
+            accent-color: var(--navy);
+            cursor: pointer;
+        }
+        
+        .signature-pad-container {
+            border: 2px dashed var(--navy-light);
+            background: var(--cream);
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .signature-pad {
+            border: 1px solid var(--border);
+            background: var(--paper);
+            width: 100%;
+            height: 160px;
+            cursor: crosshair;
+            display: block;
+            touch-action: none;
+        }
+        
+        .clear-btn {
+            background: var(--paper);
+            color: var(--navy);
+            border: 1px solid var(--navy);
+            padding: 8px 20px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+        }
+        
+        .clear-btn:hover { background: var(--navy); color: var(--paper); }
+        
+        .submit-btn {
+            background: var(--navy-deep);
+            color: var(--paper);
+            padding: 18px 40px;
+            border: none;
+            font-size: 1.15em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: 'Amiri', serif;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+        
+        .submit-btn:hover { background: var(--navy); }
+        
+        .required { color: #b8860b; margin-right: 3px; }
+        
+        .success-message {
+            display: none;
+            background: #f0f7f0;
+            border: 1px solid #4a7c59;
+            color: #2d5a3d;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--navy-deep);
+            color: var(--gold-light);
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 3px solid var(--gold);
+        }
+        
+        .footer .footer-logo {
+            font-family: 'Amiri', serif;
+            font-size: 1.7em;
+            color: var(--paper);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .footer .footer-tagline {
+            color: var(--gold);
+            font-family: 'Amiri', serif;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            letter-spacing: 1px;
+        }
+        
+        .footer .footer-blessing {
+            color: var(--gold-light);
+            font-family: 'Amiri', serif;
+            font-size: 1.1em;
+            margin: 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid rgba(201, 169, 97, 0.3);
+            border-bottom: 1px solid rgba(201, 169, 97, 0.3);
+        }
+        
+        .footer .management {
+            color: var(--paper);
+            font-family: 'Amiri', serif;
+            font-size: 1.15em;
+            letter-spacing: 2px;
+            margin-top: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content { padding: 30px 20px; }
+            .header h1 { font-size: 2.2em; }
+            .header .logo { max-width: 120px; }
+            .section h2 { font-size: 1.6em; }
+            .section-number { font-size: 2.2em; min-width: 45px; }
+            .dress-code { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-container { padding: 25px 20px; }
+            .forms-wrapper { margin: 0 -20px; padding: 40px 20px; }
+            .vision-box { padding: 25px 20px; }
+            .nav-container a { padding: 12px 15px; font-size: 0.85em; }
+            .radio-group { flex-direction: column; gap: 10px; }
+            .radio-group label { width: 100%; }
+            .lang-toggle { top: 10px; left: 10px; }
+            .lang-toggle button { padding: 5px 10px; font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-toggle">
+        <button id="btn-he" class="active" onclick="setLang('he')">עברית</button>
+        <button id="btn-fr" onclick="setLang('fr')">Français</button>
+        <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+    
+    <div class="top-bar">
+        <span class="lang-he">בס״ד • שנת הלימודים תשפ״ז</span>
+        <span class="lang-fr-content">בס״ד • Année scolaire 5787</span>
+        <span class="lang-en-content">בס״ד • School Year 5787</span>
+    </div>
+    
+    <div class="header">
+        <img src="logo.png" alt="Yesodei HaTorah Logo" class="logo">
+        <h1 class="serif">
+            <span class="lang-he">יסודי התורה</span>
+            <span class="lang-fr-content">Yesodei HaTorah</span>
+            <span class="lang-en-content">Yesodei HaTorah</span>
+        </h1>
+        <div class="tagline">
+            <span class="lang-he">לגדול בדרך ערך</span>
+            <span class="lang-fr-content">Grandir dans le chemin des valeurs</span>
+            <span class="lang-en-content">Growing in the Path of Values</span>
+        </div>
+        <div class="divider">
+            <span class="divider-symbol">✦</span>
+        </div>
+        <div class="subtitle">
+            <span class="lang-he">חזון ותקנון בית הספר • רעננה</span>
+            <span class="lang-fr-content">Vision et Règlement de l'École • Ra'anana</span>
+            <span class="lang-en-content">School Vision & Regulations • Ra'anana</span>
+        </div>
+    </div>
+    
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#vision">
+                <span class="lang-he">חזון</span>
+                <span class="lang-fr-content">Vision</span>
+                <span class="lang-en-content">Vision</span>
+            </a>
+            <a href="#values">
+                <span class="lang-he">ערכים</span>
+                <span class="lang-fr-content">Valeurs</span>
+                <span class="lang-en-content">Values</span>
+            </a>
+            <a href="#rules">
+                <span class="lang-he">תקנון</span>
+                <span class="lang-fr-content">Règlement</span>
+                <span class="lang-en-content">Regulations</span>
+            </a>
+            <a href="#dress">
+                <span class="lang-he">תלבושת</span>
+                <span class="lang-fr-content">Tenue</span>
+                <span class="lang-en-content">Uniform</span>
+            </a>
+            <a href="#tech">
+                <span class="lang-he">טכנולוגיה</span>
+                <span class="lang-fr-content">Technologie</span>
+                <span class="lang-en-content">Technology</span>
+            </a>
+            <a href="#events">
+                <span class="lang-he">שמחות</span>
+                <span class="lang-fr-content">Événements</span>
+                <span class="lang-en-content">Celebrations</span>
+            </a>
+            <a href="#forms">
+                <span class="lang-he">טפסים</span>
+                <span class="lang-fr-content">Formulaires</span>
+                <span class="lang-en-content">Forms</span>
+            </a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="content">
+            
+            <!-- Draft notice for English -->
+            <div class="lang-en-content">
+                <div class="draft-notice">
+                    ✦ Draft translation — for review and approval by the school administration ✦
+                </div>
+            </div>
+            
+            <!-- ===== חזון / Vision / Vision ===== -->
+            <div id="vision" class="section">
+                <div class="vision-box">
+                    <h2 class="serif">
+                        <span class="lang-he">חזון בית הספר</span>
+                        <span class="lang-fr-content">Vision de l'École</span>
+                        <span class="lang-en-content">School Vision</span>
+                    </h2>
+                    <div class="lang-he">
+                        <p>בית הספר שואף להצמיח בוגרים בנויים, יציבים, מלאי ערכים, ובעלי חיבור פנימי עמוק לתורה, עם מוכנות מלאה לאתגרי החיים הרוחניים, הלימודיים והחברתיים. אנו רואים אתכם ההורים כשותפים מלאים וחיוניים במסע חינוכי זה, שכן רק יחד נוכל להבטיח את מימוש חזון זה במלואו.</p>
+                        <p>בית הספר פועל להקניית תפיסת עולם זו, וכחלק מכך יפעל להקניית הידע, הערכים והמיומנויות הבאים:</p>
+                    </div>
+                    <div class="lang-fr-content">
+                        <p>L'école aspire à former des diplômés construits, stables, pleins de valeurs, et ayant une connexion intérieure profonde avec la Torah, avec une préparation complète aux défis de la vie spirituelle, académique et sociale. Nous vous considérons, les parents, comme des partenaires pleins et essentiels dans ce parcours éducatif, car ce n'est qu'ensemble que nous pourrons garantir la réalisation complète de cette vision.</p>
+                        <p>L'école œuvre pour inculquer cette vision du monde, et dans ce cadre agira pour transmettre les connaissances, valeurs et compétences suivantes :</p>
+                    </div>
+                    <div class="lang-en-content">
+                        <p>Our school aspires to nurture graduates who are grounded, stable, filled with values, and possess a deep inner connection to the Torah, fully prepared for the spiritual, academic, and social challenges of life. We view you, the parents, as full and essential partners in this educational journey — for only together can we ensure the complete realization of this vision.</p>
+                        <p>The school works to instill this worldview, and as part of this endeavor, will impart the following knowledge, values, and skills:</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== ערכים ===== -->
+            <div id="values" class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12 2L14.09 8.26L20.5 8.5L15.5 12.75L17.18 19.02L12 15.77L6.82 19.02L8.5 12.75L3.5 8.5L9.91 8.26L12 2Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">ערכים ומידות</span>
+                        <span class="lang-fr-content">Valeurs et Middot</span>
+                        <span class="lang-en-content">Values and Middot (Character Traits)</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>בית הספר פועל להטמעת ערכי התורה כמרכז חיינו. בתמיכת ההורים נפעל להשגת ערכים אלו, חיבור לה' ולמצוותיו, יראת שמים ודרך ארץ, כיבוד הורים ומורים ויחסים ראויים בין אדם לחברו. צוות בית הספר יקיים פעילויות מגוונות בשילוב שיח משמעותי ודוגמה אישית לחשיבותם של ערכים אלו ולהיותם חלק מהווייתנו.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>L'école œuvre pour intégrer les valeurs de la Torah comme centre de notre vie. Avec le soutien des parents, nous agirons pour atteindre ces valeurs : connexion à Hachem et à Ses commandements, crainte du Ciel et respect d'autrui, honorer les parents et les enseignants et relations appropriées entre les personnes. L'équipe scolaire organisera des activités variées combinant dialogue significatif et exemple personnel de l'importance de ces valeurs et de leur intégration dans notre être.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>The school works to instill Torah values as the center of our lives. With the support of parents, we will act to achieve these values: connection to Hashem and His mitzvot, Yirat Shamayim (fear of Heaven) and Derech Eretz, honoring parents and teachers, and proper Bein Adam LeChavero (interpersonal) relationships. The school staff will hold varied activities combining meaningful dialogue and personal example of the importance of these values and their integration into our being.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12 3L1 9L12 15L21 10.09V17H23V9M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">מצוינות לימודית</span>
+                        <span class="lang-fr-content">Excellence Académique</span>
+                        <span class="lang-en-content">Academic Excellence</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>פיתוח מיומנויות למידה, עידוד ללמידה איכותית ועמוקה ומתוך אהבה, זאת תתבטא בעידוד ללמידה עצמאית שתיעשה גם מעבר לשעות הלימודים, במטרה להצמיח תלמידים בעלי ידע רחב, סקרנים, מעמיקים ורציניים. הצלחה זו תצמח משיתוף פעולה הדוק וחיבור ההורים לתהליך הלימודי.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>Développement des compétences d'apprentissage, encouragement à un apprentissage qualitatif et approfondi motivé par l'amour, ceci s'exprimera par l'encouragement à l'apprentissage autonome qui se fera aussi au-delà des heures de cours, dans le but de former des élèves ayant de vastes connaissances, curieux, approfondis et sérieux. Ce succès naîtra d'une coopération étroite et de l'implication des parents dans le processus d'apprentissage.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>Development of learning skills, encouragement of quality and deep learning motivated by love. This will be expressed through encouragement of independent learning that will take place also beyond school hours, with the goal of nurturing students who have broad knowledge, are curious, thorough, and serious. This success will grow from close cooperation and parental involvement in the learning process.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M18,22A2,2 0 0,0 20,20V4C20,2.89 19.1,2 18,2H12V9L9.5,7.5L7,9V2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">אורח חיים תורני</span>
+                        <span class="lang-fr-content">Mode de Vie selon la Torah</span>
+                        <span class="lang-en-content">Torah Way of Life</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>בית הספר פועל בהכוונה והנחיה לחיים על פי ערכי התורה וההלכה, לצד שמירה על נורמות התואמות לאורח החיים החרדי. זאת, כפי שהנחילו לנו גדולי ישראל, ומתוך התייעצות עם רבנים ובכפיפות להנחייתם. אנו מחויבים לבניית אישיות תורנית, יציבה ומכובדת, המחוברת למסורת הדורות ולחזק את יכולת ההשתלבות.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>L'école agit avec orientation et guidance pour une vie selon les valeurs de la Torah et de la Halakha, tout en préservant les normes conformes au mode de vie orthodoxe. Ceci, comme nous l'ont transmis les grands d'Israël, et en consultation avec les rabbins et sous leur direction. Nous nous engageons à construire une personnalité torahnique, stable et respectée, connectée à la tradition des générations et à renforcer la capacité d'intégration.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>The school operates with direction and guidance for a life according to the values of Torah and Halacha, alongside maintaining norms consistent with the Chareidi way of life. This is as passed down to us by the Gedolei Yisrael (great Torah leaders), and through consultation with Rabbanim and subject to their guidance. We are committed to building a Torahdik personality — stable and dignified, connected to the tradition of the generations, and to strengthen the ability to integrate.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M16,4C18.11,4 19.81,5.69 19.81,7.81C19.81,9.92 18.11,11.61 16,11.61C13.89,11.61 12.19,9.92 12.19,7.81C12.19,5.69 13.89,4 16,4M16,13.4C20.67,13.4 24,15.73 24,18.2V20H8V18.2C8,15.73 11.33,13.4 16,13.4M8,4A4,4 0 0,1 12,8A4,4 0 0,1 8,12A4,4 0 0,1 4,8A4,4 0 0,1 8,4M8,13.9C8.32,13.9 8.67,13.92 9.04,13.96C7.19,15.29 6,17.11 6,18.2V20H0V18.2C0,15.73 3.33,13.9 8,13.9Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">יחס אישי וקהילתיות</span>
+                        <span class="lang-fr-content">Relation Personnelle et Esprit Communautaire</span>
+                        <span class="lang-en-content">Personal Attention and Community Spirit</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>ביה"ס משקיע בטיפוח קשר אישי, חם ומכיל בין הצוות לתלמידים, ההצלחה בביסוס קשר כזה תבוא בעזרת שותפות פעילה וקשר שכזה גם עם ההורים, כי חינוך עושים יחד, באמון ובשיתוף.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>L'école investit dans le développement d'une relation personnelle, chaleureuse et inclusive entre l'équipe et les élèves. Le succès dans l'établissement d'une telle relation viendra grâce à un partenariat actif et une telle relation également avec les parents, car l'éducation se fait ensemble, dans la confiance et la collaboration.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>The school invests in cultivating a personal, warm, and embracing connection between the staff and the students. Success in establishing such a connection will come through active partnership and a similar connection also with the parents — because Chinuch is done together, in trust and cooperation.</p>
+                </div>
+            </div>
+            
+            <!-- ===== תקנון ===== -->
+            <div id="rules" class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">תקנון בית הספר</span>
+                        <span class="lang-fr-content">Règlement de l'École</span>
+                        <span class="lang-en-content">School Regulations</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>התקנון נערך לאחר חשיבה מעמיקה ומטרתו להיטיב עם חינוך ילדיכם. כללים אלו יקלו לשמר את תרבות ביה"ס ואופיו. הקפדנו על היותם מעשיים, מקובלים ובעלי משמעות התואמים את באי ביה"ס.</p>
+                    <div class="highlight-box">
+                        <p><strong>עמידה אחידה בכל האמור חלה על כלל תלמידי ביה"ס</strong>, היא גם מקילה על ההורים, ותורמת לשמירת הרצף החינוכי (בביה"ס בבית ומחוצה לו - ולאורך השנים). יחד מתוך שיתוף פעולה נרתום את ילדינו ונחדד את חשיבות הכללים וחובת הציות למען הצלחתם בהווה ובעתיד.</p>
+                    </div>
+                </div>
+                <div class="lang-fr-content">
+                    <p>Le règlement a été élaboré après réflexion approfondie et son but est d'améliorer l'éducation de vos enfants. Ces règles faciliteront la préservation de la culture et du caractère de l'école. Nous avons veillé à ce qu'elles soient pratiques, acceptables et significatives, correspondant aux membres de l'école.</p>
+                    <div class="highlight-box">
+                        <p><strong>Le respect uniforme de tout ce qui précède s'applique à tous les élèves de l'école</strong>, cela facilite également les parents et contribue à maintenir la continuité éducative (à l'école, à la maison et en dehors - et tout au long des années). Ensemble, par la coopération, nous mobiliserons nos enfants et soulignerons l'importance des règles et l'obligation d'obéissance pour leur réussite présente et future.</p>
+                    </div>
+                </div>
+                <div class="lang-en-content">
+                    <p>The regulations have been prepared after thorough consideration, with the aim of enhancing your children's Chinuch (education). These rules will help preserve the culture and character of the school. We ensured they are practical, acceptable, and meaningful, suited to the members of the school.</p>
+                    <div class="highlight-box">
+                        <p><strong>Uniform adherence to all the above applies to all students of the school.</strong> It also eases things for parents, and contributes to maintaining educational continuity (at school, at home, and outside — and throughout the years). Together, through cooperation, we will enlist our children and emphasize the importance of the rules and the obligation to obey them for their success in the present and future.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12,3L2,12H5V20H19V12H22L12,3M12,7.7C14,7.7 15.7,9.4 15.7,11.4V16.5H8.2V11.4C8.2,9.4 10,7.7 12,7.7Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">"יסודי התורה" כמשפחה</span>
+                        <span class="lang-fr-content">"Yesodei HaTorah" comme une Famille</span>
+                        <span class="lang-en-content">"Yesodei HaTorah" as a Family</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>כל הבאים בשערי בית הספר (הורים, קרובים, אורחים) יכבדו את צביונו התורני ויופיעו בלבוש הולם, מכבד וצנוע. (כיסוי ראש חובה)</p>
+                    <p>כניסת הורים לביה"ס מחייבת תיאום מראש (באמצעות מזכירות ביה"ס).</p>
+                    <p>נורמות התנהגות ולבוש (כפי שיפורט בהמשך) המבוססות על רוח בית הספר מחייבות את התלמיד/ה גם מחוץ לשעות הלימודים ובחופשות.</p>
+                    <p>יש להשגיח על הילדים ולוודא שלאחר שעות ביה"ס הינם שוהים בחברה התואמת אורח חיים חרדי.</p>
+                    <p>כחלק מכך תהיה ההשתתפות בחוגים, פעילויות ואירועים - הייעודיים לאוכלוסייה חרדית בלבד.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>Toutes les personnes franchissant les portes de l'école (parents, proches, invités) respecteront son caractère torahnique et apparaîtront dans une tenue appropriée, respectueuse et modeste. (kippa obligatoire)</p>
+                    <p>L'entrée des parents à l'école nécessite une coordination préalable (via le secrétariat de l'école).</p>
+                    <p>Les normes de comportement et de tenue (comme détaillé ci-dessous) basées sur l'esprit de l'école obligent l'élève également en dehors des heures de cours et pendant les vacances.</p>
+                    <p>Il faut surveiller les enfants et s'assurer qu'après les heures d'école ils fréquentent une compagnie conforme au mode de vie orthodoxe.</p>
+                    <p>Dans ce cadre, la participation aux activités, loisirs et événements sera réservée uniquement à la population orthodoxe.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>All those entering the school gates (parents, relatives, guests) shall respect its Torahdik character and appear in appropriate, respectful, and Tzniusdik (modest) attire. (Head covering required)</p>
+                    <p>Parent entry to the school requires prior coordination (through the school Mazkirut/office).</p>
+                    <p>Norms of behavior and dress (as detailed further) based on the school's spirit apply to the student also outside of school hours and during vacations.</p>
+                    <p>Parents must supervise their children and ensure that after school hours they are in company that suits a Chareidi way of life.</p>
+                    <p>As part of this, participation in extracurricular activities and events shall be only those designated for the Chareidi community.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M16.5,12A2.5,2.5 0 0,0 19,9.5A2.5,2.5 0 0,0 16.5,7A2.5,2.5 0 0,0 14,9.5A2.5,2.5 0 0,0 16.5,12M9,11A3,3 0 0,0 12,8A3,3 0 0,0 9,5A3,3 0 0,0 6,8A3,3 0 0,0 9,11M16.5,14C14.67,14 11,14.92 11,16.75V19H22V16.75C22,14.92 18.33,14 16.5,14M9,13C6.67,13 2,14.17 2,16.5V19H9V16.75C9,15.9 9.33,14.41 11.37,13.28C10.5,13.1 9.66,13 9,13Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">שותפות מלאה להצלחת ילדכם</span>
+                        <span class="lang-fr-content">Partenariat Complet pour la Réussite</span>
+                        <span class="lang-en-content">Full Partnership for Your Child's Success</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <h3 class="serif">שיתוף פעולה</h3>
+                    <p>ההורים יעמדו לצד ביה"ס במתן גיבוי - בכל עניין ובכל בקשה הנוגעת לבנם/בתם.</p>
+                    <h3 class="serif">שקיפות</h3>
+                    <p>נחוץ לעדכן את ההנהלה בכל פרט רלוונטי המשפיע על התלמיד/ה. יובהר כי צוות ביה"ס מחוייב לשמירת סודיות ופרטיות.</p>
+                    <h3 class="serif">נושאים רפואיים</h3>
+                    <p>אלרגיה, מצב רפואי וכיו"ב: חובה לעדכן את צוות ביה"ס לשם היערכות להתאמות הנדרשות. לצורך כך גם נדרשת שליחה בכל שנה של הצהרת הבריאות מעודכנת.</p>
+                    <h3 class="serif">שמירה על סביבת לימודים</h3>
+                    <p>יש לשמור על שלימות ציוד בית הספר וניקיונו. תלמיד/ה שיפגע בציוד יישא באחריות לתשלום הנזק.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <h3 class="serif">Coopération</h3>
+                    <p>Les parents se tiendront aux côtés de l'école en apportant leur soutien - pour toute question et toute demande concernant leur fils/fille.</p>
+                    <h3 class="serif">Transparence</h3>
+                    <p>Il est nécessaire d'informer la direction de tout détail pertinent affectant l'élève. Il est précisé que l'équipe scolaire est tenue au respect de la confidentialité et de la vie privée.</p>
+                    <h3 class="serif">Questions Médicales</h3>
+                    <p>Allergies, état médical, etc. : Il est obligatoire d'informer l'équipe scolaire pour préparer les adaptations nécessaires. À cet effet, l'envoi chaque année de la déclaration de santé mise à jour est requis.</p>
+                    <h3 class="serif">Préservation de l'Environnement Scolaire</h3>
+                    <p>Il faut préserver l'intégrité de l'équipement scolaire et sa propreté. Un élève endommageant l'équipement sera responsable du paiement des dommages.</p>
+                </div>
+                <div class="lang-en-content">
+                    <h3 class="serif">Cooperation</h3>
+                    <p>Parents will stand alongside the school in providing backing — on every matter and every request concerning their son/daughter.</p>
+                    <h3 class="serif">Transparency</h3>
+                    <p>It is essential to update the administration on any relevant detail affecting the student (behavioral changes, illness, family changes, as well as identification of difficulty, diagnosis, and treatment). It shall be clarified that the school staff is committed to maintaining confidentiality and privacy.</p>
+                    <h3 class="serif">Medical Matters</h3>
+                    <p>Allergies, medical conditions, etc.: It is mandatory to update the school staff to prepare the necessary accommodations. For this purpose, an updated Health Declaration for the student is required each year.</p>
+                    <h3 class="serif">Preserving the Learning Environment</h3>
+                    <p>The integrity and cleanliness of school equipment must be maintained. A student who damages equipment will bear responsibility for payment of the damage.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M6,9H18V11H6M14,14H6V12H14M18,8H6V6H18"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">קשר הורים-מורים</span>
+                        <span class="lang-fr-content">Relation Parents-Enseignants</span>
+                        <span class="lang-en-content">Parent-Teacher Communication</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>ביה"ס מתייחס בכבוד לכל פניית הורים, ומתפנה לדון בה בכובד ראש על כן יש לתאם מראש כל פגישה.</p>
+                    <p>אין להפריע למורים/מורות בזמן תפילה, שיעור או הפסקה.</p>
+                    <p><strong>זימון הורים לביה"ס / אסיפות הורים:</strong> הנחיצות של השתתפותכם הכרחית ועל כן השתתפות חובה.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>L'école traite avec respect toute demande des parents et se rend disponible pour en discuter avec sérieux. Il faut donc coordonner à l'avance chaque rencontre.</p>
+                    <p>Il ne faut pas déranger les enseignants/enseignantes pendant la prière, les cours ou les récréations.</p>
+                    <p><strong>Convocation des parents à l'école / réunions de parents :</strong> La nécessité de votre participation est essentielle et donc la présence est obligatoire.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>The school treats every parent inquiry with respect and takes the time to discuss it seriously. Therefore, every meeting must be scheduled in advance.</p>
+                    <p>Do not interrupt teachers during Tefillah (prayer), lessons, or breaks.</p>
+                    <p><strong>Parent summons to school / parent meetings:</strong> Your participation is essential, and therefore attendance is mandatory.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V21H5V5H7V7M17.5,11.5L16.09,10.09L10.5,15.67L7.91,13.09L6.5,14.5L10.5,18.5L17.5,11.5Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">נהלי נוכחות</span>
+                        <span class="lang-fr-content">Règles de Présence</span>
+                        <span class="lang-en-content">Attendance Rules</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <div class="highlight-box">
+                        <p><strong>הקפדה על סדרי ביה"ס מהווה נדבך משמעותי ומחייב הן מבחינה חינוכית והן מבחינה בטיחותית.</strong></p>
+                    </div>
+                    <p><strong>איחורים וחיסורים:</strong> יש לרשום איחורים וחיסורים במחברת קשר בלבד.</p>
+                    <p>ביה"ס מקפיד על נוכחותו המלאה של התלמיד/ה. נופש משפחתי יש לקבוע בימי חופשה בלבד.</p>
+                    <p><strong>שחרורים:</strong> יציאה מבית הספר לפני שעת סיום הלימודים תיעשה רק בליווי הורה, או מיופה כוחו בצירוף אישור בכתב מההורים.</p>
+                    <p><strong>אין שחרורים בטלפון!</strong></p>
+                </div>
+                <div class="lang-fr-content">
+                    <div class="highlight-box">
+                        <p><strong>Le respect des règles de l'école constitue un pilier significatif et obligatoire, tant du point de vue éducatif que sécuritaire.</strong></p>
+                    </div>
+                    <p><strong>Retards et absences :</strong> Il faut noter les retards et absences uniquement dans le cahier de correspondance.</p>
+                    <p>L'école exige la présence complète de l'élève. Les vacances familiales doivent être fixées uniquement pendant les jours de congé.</p>
+                    <p><strong>Sorties anticipées :</strong> La sortie de l'école avant la fin des cours se fera uniquement accompagné d'un parent ou de son mandataire avec une autorisation écrite des parents.</p>
+                    <p><strong>Pas de sorties par téléphone !</strong></p>
+                </div>
+                <div class="lang-en-content">
+                    <div class="highlight-box">
+                        <p><strong>Adherence to school order constitutes a significant and mandatory foundation, both educationally and for safety.</strong></p>
+                    </div>
+                    <p><strong>Tardiness and absences:</strong> Tardiness and absences should be recorded only in the communication notebook (Machberet Kesher).</p>
+                    <p>The school insists on the student's full attendance throughout the day and school year. Family vacations must be scheduled only during vacation days.</p>
+                    <p><strong>Early dismissal:</strong> Leaving school before the end of the school day shall be done only accompanied by a parent, or their designated agent with written approval from the parents.</p>
+                    <p><strong>No dismissals over the phone!</strong></p>
+                    <p>The student will be required to make up missed material as a result of absence/tardiness.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">התנהלות יום-יומית</span>
+                        <span class="lang-fr-content">Conduite Quotidienne</span>
+                        <span class="lang-en-content">Daily Conduct</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <h3 class="serif">דרך ארץ וכבוד הדדי</h3>
+                    <p>הקפדה על יחס של כבוד בין התלמידים לצוות בית הספר.</p>
+                    <p>כחלק מכך - התלמידים/ות יעמדו עם כניסת רב/מנהל/מורה לכיתה.</p>
+                    <h3 class="serif">התנהגות בכיתה</h3>
+                    <p>התלמידים שותפים ליצירת האווירה הלימודית המתאימה. "באים לביה"ס - כדי ללמוד"!</p>
+                    <h3 class="serif">התנהגות בהפסקה</h3>
+                    <p>אין להישאר בכיתה ללא השגחה. בהפסקה נוכח מורה תורן שהוא הכתובת לתלמידים.</p>
+                    <h3 class="serif">ארוחות</h3>
+                    <p>הארוחה תכלול אוכל מזין בלבד, אין להביא מנות חמות וממתקים, לא יותר שימוש במיקרוגל.</p>
+                    <p>(תלמידים הרשומים להזנה בשטח בית הספר יוכלו לאכול אך ורק במקום המיועד לכך!) אי ציות יגרום להסרת הרישום מההזנה.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <h3 class="serif">Derech Eretz et Respect Mutuel</h3>
+                    <p>Respect strict d'une relation de respect entre les élèves et l'équipe scolaire.</p>
+                    <p>Dans ce cadre - les élèves se lèveront à l'entrée du Rav/directeur/enseignant dans la classe.</p>
+                    <h3 class="serif">Comportement en Classe</h3>
+                    <p>Les élèves participent à la création de l'atmosphère d'apprentissage appropriée. "On vient à l'école - pour apprendre" !</p>
+                    <h3 class="serif">Comportement pendant la Récréation</h3>
+                    <p>Il ne faut pas rester en classe sans surveillance. Pendant la récréation, un enseignant de garde est présent qui est l'interlocuteur des élèves.</p>
+                    <h3 class="serif">Repas</h3>
+                    <p>Le repas comprendra uniquement de la nourriture nutritive, il ne faut pas apporter de plats chauds et de bonbons, plus d'utilisation du micro-ondes.</p>
+                    <p>(Les élèves inscrits au service de restauration scolaire ne pourront manger que dans l'endroit désigné à cet effet !) La désobéissance entraînera la suppression de l'inscription au service de restauration.</p>
+                </div>
+                <div class="lang-en-content">
+                    <h3 class="serif">Derech Eretz and Mutual Respect</h3>
+                    <p>Maintaining a relationship of respect between students and school staff.</p>
+                    <p>As part of this — students will stand upon the entry of a Rav/principal/teacher to the classroom.</p>
+                    <h3 class="serif">Classroom Conduct</h3>
+                    <p>Students partner in creating the appropriate learning atmosphere alongside adherence to rules of discipline and obedience to teacher instructions. "We come to school — to learn"!</p>
+                    <p>As part of this, one must arrive with full learning equipment, prepared homework, completed assignments, and made-up material after an absence.</p>
+                    <h3 class="serif">Recess Conduct</h3>
+                    <p>Do not remain in the classroom without supervision. During recess, a duty teacher is present, who is the address for students at that time.</p>
+                    <h3 class="serif">Meals</h3>
+                    <p>The meal shall include only nutritious food. Hot dishes and sweets are not to be brought; microwave use is no longer permitted.</p>
+                    <p>(Students registered for meals on school grounds may eat only in the designated area!) Non-compliance will result in removal from the meal registration.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">בין אדם לחברו</span>
+                        <span class="lang-fr-content">Relations Interpersonnelles</span>
+                        <span class="lang-en-content">Bein Adam LeChavero (Interpersonal Conduct)</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>אנו מצפים מתלמידי ביה"ס לנהוג בצורה מכבדת ותמיכה הדדית, על פי ערך "ואהבת לרעך כמוך".</p>
+                    <p>אלימות, קללות, ניבול פה, העלבה, הטרדה, החרמה או כל צורה של פגיעה אסורים בהחלט.</p>
+                    <p>נפעל במלוא הנחישות למנוע כל אלימות ופגיעה בזולת. במקרה של הפרה, התגובה תהיה חמורה ובלתי מתפשרת, עד כדי השעיה מבית הספר.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>Nous attendons des élèves de l'école qu'ils se comportent de manière respectueuse et avec soutien mutuel, selon la valeur "Tu aimeras ton prochain comme toi-même" qui constitue une valeur fondamentale dans la construction d'une personnalité torahnique et d'une société solide.</p>
+                    <p>La violence, les jurons, le langage grossier, les insultes, le harcèlement, la mise à l'écart ou toute forme d'atteinte sont absolument interdits. Ces comportements contredisent les valeurs de la Torah et de la morale.</p>
+                    <p>Nous agirons avec toute la détermination pour prévenir toute violence et atteinte à autrui. En cas de violation, la réaction sera sévère et sans compromis, jusqu'à la suspension de l'école. Un climat social sûr et respectueux est une condition nécessaire à la croissance.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>We expect students of the school to conduct themselves respectfully and with mutual support, according to the value of "V'Ahavta L'Reacha Kamocha" (Love your fellow as yourself), which is a foundational value in building a Torahdik personality and a strong community.</p>
+                    <p>Violence, cursing, foul language, insults, harassment, exclusion, or any form of harm are absolutely forbidden. Such behaviors contradict the values of Torah and Mussar (ethics).</p>
+                    <p>We shall act with full determination to prevent any violence and harm to others. In case of violation, the response will be severe and uncompromising, up to suspension from school. A safe and respectful social climate is a necessary condition for growth.</p>
+                </div>
+            </div>
+            
+            <!-- ===== תלבושת ===== -->
+            <div id="dress" class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M12,3L2,7.5L12,12L22,7.5L12,3M8.5,10.5L10.5,17.5L12,15L13.5,17.5L15.5,10.5H8.5Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">תלבושת אחידה</span>
+                        <span class="lang-fr-content">Uniforme Scolaire</span>
+                        <span class="lang-en-content">School Uniform</span>
+                    </h2>
+                </div>
+                <div class="dress-code">
+                    <div class="dress-code-section">
+                        <h4>
+                            <span class="lang-he">בנים</span>
+                            <span class="lang-fr-content">Garçons</span>
+                            <span class="lang-en-content">Boys</span>
+                        </h4>
+                        <div class="inner">
+                            <div class="lang-he">
+                                <p><strong>חולצה:</strong> כיתות א'-ג' - חולצת טריקו בצבע תכלת או לבן ללא צווארון עם סמל בית הספר. כיתות ד'-ו' - חולצת טריקו עם צווארון. כיתות ז'-ח' - חולצה לבנה מכופתרת בלבד.</p>
+                                <p>תלמידי כיתה ח' יתפללו עם כובע וחליפה.</p>
+                                <p><strong>מכנסיים:</strong> כהים וארוכים, לא טרנינג.</p>
+                                <p><strong>ציצית:</strong> חובה בכל עת.</p>
+                                <p><strong>כיפה:</strong> שחורה, המכסה את רוב הראש.</p>
+                                <p><strong>נעליים וגרביים:</strong> אין להגיע בנעליים זוהרות או צבעוניות עזות, ואין לנעול גרבי קרסוליות.</p>
+                                <p><strong>סריגים:</strong> סריג/סוודר חלק בלבד בצבעים כהים, ללא כתובים! קפוצונים אסורים!</p>
+                                <p><strong>תספורת:</strong> תואמת את רוח בית הספר.</p>
+                            </div>
+                            <div class="lang-fr-content">
+                                <p><strong>Chemise :</strong> Classes א'-ג' - T-shirt couleur turquoise ou blanc sans col avec logo de l'école. Classes ד'-ו' - T-shirt à col couleur turquoise ou blanc. Classes ז'-ח' - Chemise blanche boutonnée uniquement.</p>
+                                <p>Les élèves de ח' prieront avec chapeau et costume.</p>
+                                <p><strong>Pantalon :</strong> Sombre et long, pas de jogging.</p>
+                                <p><strong>Tsitsit :</strong> Obligatoire en permanence.</p>
+                                <p><strong>Kippa :</strong> Noire, couvrant la majorité de la tête.</p>
+                                <p><strong>Chaussures et chaussettes :</strong> Pas de chaussures brillantes ou de couleurs vives, et ne pas porter de chaussettes courtes.</p>
+                                <p><strong>Pulls :</strong> Pull/sweat uni uniquement en couleurs sombres, sans aucune inscription ! Les sweats à capuche sont interdits !</p>
+                                <p><strong>Coiffure :</strong> Conforme à l'esprit de l'école.</p>
+                            </div>
+                            <div class="lang-en-content">
+                                <p><strong>Shirt:</strong> Grades 1-3 — turquoise or white t-shirt without collar with school logo. Grades 4-6 — turquoise or white polo shirt with school logo. Grades 7-8 — white button-down shirt only.</p>
+                                <p>Grade 8 students will daven (pray) with hat and jacket (chapeau and chalifah).</p>
+                                <p><strong>Pants:</strong> Dark and long (grades 4-8), no sweatpants.</p>
+                                <p><strong>Tzitzit:</strong> Mandatory at all times. Please check the integrity of the tzitzit strings from time to time.</p>
+                                <p><strong>Kippah:</strong> Black, covering most of the head.</p>
+                                <p><strong>Shoes and socks:</strong> No shiny or brightly colored shoes, and no ankle socks.</p>
+                                <p><strong>Sweaters:</strong> Plain sweater/pullover only in dark colors, without any writing! Hoodies are prohibited!</p>
+                                <p><strong>Haircut:</strong> In accordance with the school's spirit.</p>
+                                <p><em>Entry to the school is only with appropriate appearance as above; staying at school will only be permitted after correcting the situation, if required.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dress-code-section">
+                        <h4>
+                            <span class="lang-he">בנות</span>
+                            <span class="lang-fr-content">Filles</span>
+                            <span class="lang-en-content">Girls</span>
+                        </h4>
+                        <div class="inner">
+                            <div class="lang-he">
+                                <p><strong>חולצה:</strong> חולצת צווארון בצבע תכלת עם סמל בית הספר. פתח הצוואר יהיה סגור כהלכה.</p>
+                                <p>לכיתות א' ב' בלבד - אפשרות להגיע בחולצת תלבושת מבד טריקו.</p>
+                                <p>בימי ראש חודש ומסיבות - ניתן ללבוש חולצה לבנה חלקה ומכופתרת.</p>
+                                <p><strong>חצאית:</strong> חצאית רחבה בצבע כחול או שחור בלבד, המכסה את הברך ללא שסע!</p>
+                                <p><strong>נעליים:</strong> נעליים עדינות, אין להופיע בנעלי בית.</p>
+                                <p><strong>גרביים:</strong> גרביים ארוכות, אין להופיע במכנס טייץ!</p>
+                                <p><strong>שיער:</strong> אסוף בגומיה ללא תוספות.</p>
+                                <p><strong>תכשיטים:</strong> עגילים - זוג אחד וקצר. צמיד - אחד. שרשרת - אחת.</p>
+                                <p><strong>לק ואיפור:</strong> אסורים בהחלט!</p>
+                                <p><strong>סריגים:</strong> סריג/סוודר חלק בלבד בצבעים: שחור או כחול, ללא כתובים!</p>
+                            </div>
+                            <div class="lang-fr-content">
+                                <p><strong>Chemise :</strong> Chemise à col couleur turquoise portant le logo de l'école. Attention à ce que l'ouverture du col soit fermée comme il se doit.</p>
+                                <p>Pour les classes א' et ב' uniquement - Il est possible d'arriver avec une chemise en tissu jersey.</p>
+                                <p>Les jours de Rosh Hodesh et lors de fêtes - Il est permis de porter une chemise blanche unie et boutonnée.</p>
+                                <p><strong>Jupe :</strong> Jupe large en couleur bleue ou noire uniquement, couvrant le genou sans fente !</p>
+                                <p><strong>Chaussures :</strong> Chaussures délicates, ne pas apparaître en chaussons de maison.</p>
+                                <p><strong>Chaussettes :</strong> Chaussettes longues, ne pas apparaître en collants !</p>
+                                <p><strong>Cheveux :</strong> Attachés avec un élastique sans ajouts de coiffures et accessoires.</p>
+                                <p><strong>Bijoux :</strong> Boucles d'oreilles - une paire et courtes. Bracelet - un. Collier - un.</p>
+                                <p><strong>Vernis et maquillage :</strong> Absolument interdits ! Même les plus discrets.</p>
+                                <p><strong>Pulls :</strong> Pull/sweat uni uniquement en couleurs : noir ou bleu, sans aucune inscription !</p>
+                            </div>
+                            <div class="lang-en-content">
+                                <p><strong>Shirt:</strong> Turquoise polo shirt bearing the school logo. Please ensure the collar opening is closed properly (Tzniusdik).</p>
+                                <p>For grades 1 and 2 only — a jersey-fabric uniform shirt option is available.</p>
+                                <p>On Rosh Chodesh days and at parties — a plain white button-down shirt is permitted.</p>
+                                <p><strong>Skirt:</strong> Wide skirt in blue or black only, covering the knee, without any slit!</p>
+                                <p><strong>Shoes:</strong> Refined shoes; slippers of any kind are not permitted.</p>
+                                <p><strong>Socks:</strong> Long socks; leggings/tights are not permitted!</p>
+                                <p><strong>Hair:</strong> Tied back with an elastic, without hairstyle additions or accessories.</p>
+                                <p><strong>Jewelry:</strong> Earrings — one short pair. Bracelet — one. Necklace — one.</p>
+                                <p><strong>Nail polish and makeup:</strong> Absolutely forbidden! Even the most subtle.</p>
+                                <p><strong>Sweaters:</strong> Plain sweater/pullover only in black or blue, without any writing!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== טכנולוגיה ===== -->
+            <div id="tech" class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">טלפונים, אינטרנט וטכנולוגיה</span>
+                        <span class="lang-fr-content">Téléphones, Internet et Technologie</span>
+                        <span class="lang-en-content">Phones, Internet, and Technology</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p><strong>הפקדת מכשירים כשרים:</strong> אם יש הכרח ניתן יהיה להביא מכשיר כשר בלבד לבית הספר בתיאום עם המורה ואישור ההנהלה, ולהפקידו אצל המזכירות/השומר.</p>
+                    <p><strong>בטיולים:</strong> ניתן להביא פלאפון כשר בלבד ללא אינטרנט. רק למטרות תקשורת.</p>
+                    <p><strong>גישה לאינטרנט:</strong> על ההורים להקפיד בבית ובחוץ למניעת כל גישה לאינטרנט ללא בקרה/סינון.</p>
+                    <p><strong>קבוצות וואטסאפ:</strong> איסור מוחלט על תלמידים/ות להשתתף בקבוצות, גם לא ממכשיר ההורים.</p>
+                    <p><strong>מכשירים אלקטרוניים:</strong> אין להביא לבית הספר מכשירים כגון דיסק און קי, מצלמות, נגנים, טאבלטים וכדומה.</p>
+                    <div class="highlight-box">
+                        <p><strong>נייד חכם (סמארטפון):</strong> תלמיד/ה שיימצא ברשותו/ה אף מחוץ לכתלי בית הספר נצטרך להשעותו. המכשיר יופקד אצל המנהל ויוחזר להורה בלבד.</p>
+                    </div>
+                </div>
+                <div class="lang-fr-content">
+                    <p><strong>Dépôt d'appareils casher :</strong> S'il y a nécessité, il sera possible d'apporter un appareil casher uniquement à l'école en coordination avec l'enseignant et l'autorisation de la direction, et de le déposer au secrétariat/gardien. L'école ne prend pas la responsabilité des appareils.</p>
+                    <p><strong>Lors de sorties :</strong> Il est possible d'apporter un téléphone casher uniquement sans internet. Seulement à des fins de communication.</p>
+                    <p><strong>Accès à Internet :</strong> Les parents doivent veiller à la maison et à l'extérieur à prévenir tout accès à Internet sans contrôle/filtrage. En général, il est recommandé aux parents de limiter cela.</p>
+                    <p><strong>Groupes WhatsApp :</strong> Interdiction absolue aux élèves de participer à des groupes, même pas depuis l'appareil des parents.</p>
+                    <p><strong>Appareils électroniques :</strong> Il ne faut pas apporter à l'école des appareils tels que clé USB, appareils photo, lecteurs, tablettes, etc.</p>
+                    <p>Comme ligne éducative, notre école s'oppose à l'exposition des élèves à Internet et autres, ceci constitue une condition centrale à l'adaptation de l'élève et à son admission et maintien à l'école ! Et nous ne pourrons pas permettre la présence d'élèves exposés aux différents médias.</p>
+                    <div class="highlight-box">
+                        <p><strong>Téléphone intelligent (smartphone) :</strong> Un élève trouvé en sa possession même en dehors des murs de l'école devra être suspendu. L'appareil sera déposé chez le directeur et rendu au parent uniquement. Le retour de l'élève aux cours ne sera possible qu'après avoir vérifié qu'il/elle n'est plus exposé(e) à l'utilisation de l'appareil.</p>
+                    </div>
+                </div>
+                <div class="lang-en-content">
+                    <p><strong>Depositing kosher devices:</strong> If necessary, it will be possible to bring only a Kosher device to school in coordination with the teacher and administration approval, and to deposit it with the Mazkirut (office) or security guard. The school does not take responsibility for the devices.</p>
+                    <p><strong>On trips:</strong> Only a Kosher phone without internet may be brought. For communication purposes only.</p>
+                    <p><strong>Internet access:</strong> Parents must ensure at home and outside to prevent any unmonitored/unfiltered access to the internet. In general, it is recommended for parents to minimize this.</p>
+                    <p><strong>WhatsApp groups:</strong> Absolute prohibition on students participating in groups, not even from the parents' device.</p>
+                    <p><strong>Electronic devices:</strong> Devices such as USB drives, cameras, music players, tablets, and the like may not be brought to school.</p>
+                    <p>As an educational stance, our school opposes exposure of students to the internet and similar; this constitutes a central condition for the student's suitability, admission, and continued attendance at the school. We cannot permit the presence of students exposed to various media.</p>
+                    <div class="highlight-box">
+                        <p><strong>Smartphone:</strong> A student found in possession of one, even outside the school walls, will need to be suspended. The device will be deposited with the principal and returned only to the parent. The student's return to school will only be permitted once we verify that he/she is no longer exposed to the device.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ===== שמחות ===== -->
+            <div id="events" class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M20 6H16V4C16 2.89 15.11 2 14 2H10C8.89 2 8 2.89 8 4V6H4C2.89 6 2 6.89 2 8V19C2 20.11 2.89 21 4 21H20C21.11 21 22 20.11 22 19V8C22 6.89 21.11 6 20 6M10 4H14V6H10V4M11 17.5V15H8V13H11V10.5L14.5 14L11 17.5Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">שמחות בבית הספר</span>
+                        <span class="lang-fr-content">Célébrations à l'École</span>
+                        <span class="lang-en-content">Simchos (Celebrations)</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>ככלל, הננו להדגיש כי סגנון ואווירת השמחות ראוי וצריך שיתאימו לרוח בית הספר והשקפתו.</p>
+                    <h3 class="serif">תקנון "בר מצווה"</h3>
+                    <p><strong>תיאום עם צוות ביה"ס:</strong> יש ליצור קשר עם מחנך הכיתה לפני סגירת האירוע.</p>
+                    <p><strong>הפרדה מלאה:</strong> הקפדה על הפרדה מלאה (כולל מחיצה) לכל אורך האירוע, גם בריקודים.</p>
+                    <p><strong>יש להזמין את כל חברי הכיתה.</strong></p>
+                    <p>התלמידים מגיעים בחולצה לבנה מכופתרת, מכנסיים כהים ונעלים שחורות.</p>
+                    <p>תלמידים מבר מצווה ומעלה יופיעו בכובע וחליפה.</p>
+                    <p><strong>כשרות מהודרת:</strong> האוכל יהיה ברמת כשרות "מהדרין".</p>
+                    <p><strong>מוזיקה תואמת:</strong> תקליטן יתאים את המוזיקה לקדושת המעמד.</p>
+                    <p><strong>שעות נוכחות:</strong> יש להגיע לא לפני השעה 20:00. נוכחות התלמידים מוגבלת עד השעה 22:45 לכל המאוחר.</p>
+                    <h3 class="serif">תקנון "בת מצווה"</h3>
+                    <p><strong>תיאום:</strong> יש ליצור קשר עם מחנכת הכיתה לפני סגירת האירוע.</p>
+                    <p><strong>הפרדה מלאה:</strong> הקפדה על הפרדה מלאה, גם בריקודים.</p>
+                    <p><strong>כשרות מהודרת:</strong> האוכל יהיה ברמת כשרות "מהדרין".</p>
+                    <p>יש להזמין את המחנכת ואת כל חברות הכיתה.</p>
+                    <p>התלמידות תגענה בלבוש הולם כראוי לבנות בית יעקב.</p>
+                    <p>יציאת הבנות מהאירוע לא יאוחר מהשעה 22:00.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>En général, nous soulignons que le style et l'atmosphère des célébrations doivent convenir à l'esprit de l'école et à sa conception.</p>
+                    <h3 class="serif">Règlement "Bar Mitzvah"</h3>
+                    <p><strong>Coordination avec l'équipe scolaire :</strong> Il faut contacter l'enseignant principal (Mechanech) avant de finaliser l'événement et coordonner la date, le lieu et le caractère de l'événement.</p>
+                    <p><strong>Séparation complète :</strong> Respect de la séparation complète (y compris cloison) entre hommes et femmes, durant tout l'événement, même lors des danses.</p>
+                    <p>Respect des règles de comportement approprié honorant l'événement et les invités.</p>
+                    <p><strong>Il faut inviter tous les camarades de classe.</strong></p>
+                    <p>Les élèves arrivent en chemise blanche boutonnée, pantalon sombre et chaussures noires.</p>
+                    <p>Les élèves de Bar Mitzvah et plus apparaîtront avec chapeau et costume.</p>
+                    <p><strong>Cacheroute stricte :</strong> La nourriture sera au niveau de cacheroute "Mehadrin" (acceptée par tous les élèves).</p>
+                    <p><strong>Musique appropriée :</strong> Si un DJ est invité, il doit adapter la musique à la sainteté de l'occasion.</p>
+                    <p><strong>Responsabilité :</strong> La direction de l'école n'est pas responsable de la manière dont les élèves arrivent et repartent.</p>
+                    <p><strong>Heures de présence :</strong> En général, il faut arriver pas avant 20h00. La présence des élèves est limitée jusqu'à 22h45 au plus tard.</p>
+                    <p>Il sera précisé que les cours à l'école le lendemain ont lieu normalement.</p>
+                    <h3 class="serif">Règlement "Bat Mitzvah"</h3>
+                    <p><strong>Coordination :</strong> Il faut contacter l'enseignante principale (Mechanechet) avant de finaliser l'événement et coordonner la date, le lieu et le caractère de l'événement.</p>
+                    <p><strong>Séparation complète :</strong> Respect de la Tsniout, y compris cloison entre hommes et femmes, même lors des danses.</p>
+                    <p><strong>Cacheroute stricte :</strong> La nourriture sera au niveau de cacheroute "Mehadrin".</p>
+                    <p>Il faut inviter l'enseignante et toutes les camarades de classe.</p>
+                    <p>Les élèves arriveront dans une tenue appropriée comme il convient aux filles Beit Yaakov.</p>
+                    <p>La sortie des filles de l'événement pas plus tard que 22h00.</p>
+                    <p>Le lendemain, les cours ont lieu normalement.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>In general, we emphasize that the style and atmosphere of the simchos should suit the spirit of the school and its outlook.</p>
+                    <h3 class="serif">Bar Mitzvah Regulations</h3>
+                    <p><strong>Coordination with school staff:</strong> Contact the class Mechanech (male teacher) before finalizing the event and coordinate the date, place, and character of the event.</p>
+                    <p><strong>Complete separation:</strong> Adherence to complete separation (including mechitzah) between men and women throughout the event, including during dancing.</p>
+                    <p><strong>All classmates must be invited.</strong></p>
+                    <p>Students arrive in a white button-down shirt, dark pants, and black shoes.</p>
+                    <p>Students who are Bar Mitzvah and above will appear with hat and jacket (chapeau/chalifah).</p>
+                    <p><strong>Strict Kashrus:</strong> The food will be at "Mehadrin" Kashrus level (accepted by all students).</p>
+                    <p><strong>Appropriate music:</strong> If a DJ is invited, he must adapt the music to the sanctity of the occasion.</p>
+                    <p><strong>Attendance hours:</strong> As a rule, do not arrive before 20:00. Student attendance is limited to 22:45 at the latest.</p>
+                    <p>It shall be clarified that classes the next day take place as usual.</p>
+                    <h3 class="serif">Bat Mitzvah Regulations</h3>
+                    <p><strong>Coordination:</strong> Contact the class Mechanechet (female teacher) before finalizing the event and coordinate the date, place, and character of the event.</p>
+                    <p><strong>Complete separation:</strong> Adherence to full Tzniyus (modesty), including mechitzah between men and women, including during dancing.</p>
+                    <p><strong>Strict Kashrus:</strong> The food will be at "Mehadrin" Kashrus level.</p>
+                    <p>The Mechanechet and all classmates must be invited.</p>
+                    <p>Students shall come in appropriate attire as befits Beit Yaakov girls.</p>
+                    <p>Girls' departure from the event no later than 22:00.</p>
+                    <p>The next day, classes take place as usual.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M18,11H6V6H18M16.5,17A1.5,1.5 0 0,1 15,15.5A1.5,1.5 0 0,1 16.5,14A1.5,1.5 0 0,1 18,15.5A1.5,1.5 0 0,1 16.5,17M7.5,17A1.5,1.5 0 0,1 6,15.5A1.5,1.5 0 0,1 7.5,14A1.5,1.5 0 0,1 9,15.5A1.5,1.5 0 0,1 7.5,17M4,16C4,16.88 4.39,17.67 5,18.22V20A1,1 0 0,0 6,21H7A1,1 0 0,0 8,20V19H16V20A1,1 0 0,0 17,21H18A1,1 0 0,0 19,20V18.22C19.61,17.67 20,16.88 20,16V6C20,2.5 16.42,2 12,2C7.58,2 4,2.5 4,6V16Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">התנהגות בהסעה</span>
+                        <span class="lang-fr-content">Transport Scolaire</span>
+                        <span class="lang-en-content">School Transportation Conduct</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>שירותי ההסעות של בית הספר מותנים בציות מלא של התלמידים להוראות הנהג.</p>
+                    <p>התלמיד/ה ימתינו בתחנה כ-5 דקות לפני מועד האיסוף, יחגרו חגורת בטיחות.</p>
+                    <p>אין לתפוס מקומות קבועים. אין לרוץ או לדחוף. אין לעלות להסעה אחרת ללא רשות.</p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>Les services de transport de l'école sont conditionnés par l'obéissance complète des élèves aux instructions du chauffeur. Cette exigence découle tant de considérations sécuritaires qu'éducatives et il n'y aura aucun compromis à ce sujet.</p>
+                    <p>Les élèves attendront à l'arrêt environ 5 minutes avant l'heure de ramassage, attacheront leur ceinture de sécurité.</p>
+                    <p>Il ne faut pas occuper de places fixes. Il ne faut pas courir ou pousser. Il ne faut pas monter dans un autre transport sans permission.</p>
+                </div>
+                <div class="lang-en-content">
+                    <p>The school's transportation services are conditional upon full obedience of students to the driver's instructions. This requirement stems from both safety and educational considerations, and there shall be no compromise on it.</p>
+                    <p>Students shall wait at the stop about 5 minutes before pickup time and fasten seat belts.</p>
+                    <p>Do not take fixed seats. Do not run or push. Do not board another transport without permission.</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon"><svg viewBox="0 0 24 24"><path d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V21H5V5H7V7Z"/></svg></div>
+                    <h2 class="serif">
+                        <span class="lang-he">סיכום</span>
+                        <span class="lang-fr-content">Résumé</span>
+                        <span class="lang-en-content">Summary</span>
+                    </h2>
+                </div>
+                <div class="lang-he">
+                    <p>קבלת התלמיד/ה לבית הספר מותנית בהתאמה מוחלטת של התלמיד ומשפחתו לתקנון.</p>
+                    <p>הנהלת בית הספר רשאית לנקוט בכל אמצעי משמעת מתאים כנגד תלמיד אשר לא יעמוד בכללים.</p>
+                    <p><strong>אנו רואים בכם, ההורים, שותפים מלאים וחשובים לדרך החינוכית שלנו. יחד, נבנה עבור ילדינו סביבה תומכת ומעשירה, שתאפשר להם לצמוח ולהצליח.</strong></p>
+                </div>
+                <div class="lang-fr-content">
+                    <p>L'admission de l'élève à l'école est conditionnée par l'adaptation absolue de l'élève et de sa famille au règlement.</p>
+                    <p>La direction de l'école est autorisée à prendre toute mesure disciplinaire appropriée contre un élève qui ne respecterait pas les règles. Si la violation du règlement persiste, l'école agira pour éloigner l'élève conformément aux procédures établies par la direction.</p>
+                    <p><strong>Nous vous considérons, les parents, comme des partenaires pleins et importants de notre voie éducative. Ensemble, nous construirons pour nos enfants un environnement de soutien et d'enrichissement, qui leur permettra de grandir et de réussir.</strong></p>
+                </div>
+                <div class="lang-en-content">
+                    <p>Admission of the student to the school is conditional upon complete adaptation of the student and family to the regulations.</p>
+                    <p>The school administration is authorized to take any appropriate disciplinary measure against a student who does not abide by the rules. Should the violation of the regulations persist, the school will act to remove the student in accordance with the procedures established by the administration.</p>
+                    <p><strong>We see you, the parents, as full and important partners in our educational path. Together, we will build for our children a supportive and enriching environment that will enable them to grow and succeed.</strong></p>
+                </div>
+            </div>
+            
+            <div class="rabbi-approval">
+                <h2 class="serif">
+                    <span class="lang-he">תקנון זה מאושר על ידי משרד החינוך ורשת החינוך העצמאי</span>
+                    <span class="lang-fr-content">Ce règlement est approuvé par le Ministère de l'Éducation et le réseau Chinuch Atzmai</span>
+                    <span class="lang-en-content">This regulation is approved by the Ministry of Education and the Chinuch Atzmai network</span>
+                </h2>
+                <p>
+                    <span class="lang-he">בברכה</span>
+                    <span class="lang-fr-content">Cordialement</span>
+                    <span class="lang-en-content">With Blessings</span>
+                </p>
+            </div>
+            
+            <!-- ===== טפסים (עברית בלבד) ===== -->
+            <div id="forms" class="forms-wrapper" dir="rtl" style="font-family: 'Assistant', sans-serif;">
+                <div class="forms-intro">
+                    <h2 class="serif">
+                        <span class="lang-he">טפסים ואישורים</span>
+                        <span class="lang-fr-content">Formulaires</span>
+                        <span class="lang-en-content">Forms</span>
+                    </h2>
+                    <div class="divider">
+                        <span style="color: var(--gold); font-size: 1.3em;">✦</span>
+                    </div>
+                    <p>
+                        <span class="lang-he">למען שיתוף הפעולה בין בית הספר לבין ההורים, מבקשים אנו למלא את שני הטפסים הבאים. הפרטים ישלחו ישירות למזכירות בית הספר.</span>
+                        <span class="lang-fr-content">Pour la coopération entre l'école et les parents, veuillez remplir les deux formulaires ci-dessous (en hébreu). Les informations seront envoyées directement au secrétariat de l'école.</span>
+                        <span class="lang-en-content">For cooperation between the school and parents, please fill out the two forms below (in Hebrew). The information will be sent directly to the school office.</span>
+                    </p>
+                </div>
+                
+                <!-- טופס חתימה על התקנון -->
+                <div class="form-container">
+                    <h3 class="serif">חתימה על תקנון בית הספר</h3>
+                    <div class="form-subtitle">אישור קריאת התקנון והתחייבות לקיומו</div>
+                    
+                    <form id="signature-form" name="signature-form" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="signature-form">
+                        <p style="display:none;"><label>אל תמלא: <input name="bot-field"></label></p>
+                        
+                        <h4 class="serif">פרטי ההורה</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parent-name">שם ההורה החותם <span class="required">*</span></label>
+                                <input type="text" id="parent-name" name="שם ההורה" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="parent-id">תעודת זהות <span class="required">*</span></label>
+                                <input type="text" id="parent-id" name="ת.ז. הורה" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parent-phone">טלפון ליצירת קשר <span class="required">*</span></label>
+                                <input type="tel" id="parent-phone" name="טלפון" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="parent-email">דוא"ל</label>
+                                <input type="email" id="parent-email" name="אימייל">
+                            </div>
+                        </div>
+                        
+                        <h4 class="serif">פרטי התלמיד/ה</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="student-name-sig">שם התלמיד/ה <span class="required">*</span></label>
+                                <input type="text" id="student-name-sig" name="שם התלמיד" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="student-class-sig">כיתה <span class="required">*</span></label>
+                                <input type="text" id="student-class-sig" name="כיתה" required>
+                            </div>
+                        </div>
+                        
+                        <h4 class="serif">התחייבויות</h4>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="agreement-1" name="קראתי את התקנון" required value="כן">
+                            <label for="agreement-1">קראתי את התקנון בעיון והבנתי את תכולתו <span class="required">*</span></label>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="agreement-2" name="מתחייב לקיים את התקנון" required value="כן">
+                            <label for="agreement-2">אני מתחייב/ת כי אני ובני/בתי נקיים את כל הכללים והנהלים המפורטים בתקנון <span class="required">*</span></label>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="agreement-3" name="מודע לתנאי הקבלה" required value="כן">
+                            <label for="agreement-3">אני מודע/ת לכך שקבלת התלמיד/ה מותנית בהתאמה מוחלטת של המשפחה לתקנון <span class="required">*</span></label>
+                        </div>
+                        
+                        <h4 class="serif">חתימה ותאריך</h4>
+                        <div class="form-group">
+                            <label for="signature-date">תאריך <span class="required">*</span></label>
+                            <input type="date" id="signature-date" name="תאריך חתימה" required>
+                        </div>
+                        <div class="form-group">
+                            <label>חתימה דיגיטלית <span class="required">*</span></label>
+                            <div class="signature-pad-container">
+                                <canvas id="signature-pad" class="signature-pad"></canvas>
+                                <input type="hidden" name="חתימה" id="signature-data">
+                            </div>
+                            <button type="button" class="clear-btn" onclick="clearSignature()">נקה חתימה</button>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">שליחת חתימה על התקנון</button>
+                    </form>
+                </div>
+                
+                <!-- טופס הצהרת בריאות -->
+                <div class="form-container">
+                    <h3 class="serif">הצהרת בריאות</h3>
+                    <div class="form-subtitle">מידע רפואי לצוות בית הספר</div>
+                    
+                    <form id="health-form" name="health-form" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                        <input type="hidden" name="form-name" value="health-form">
+                        <p style="display:none;"><label>אל תמלא: <input name="bot-field"></label></p>
+                        
+                        <h4 class="serif">פרטי התלמיד/ה</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="student-name-health">שם התלמיד/ה <span class="required">*</span></label>
+                                <input type="text" id="student-name-health" name="שם התלמיד" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="student-id">תעודת זהות <span class="required">*</span></label>
+                                <input type="text" id="student-id" name="ת.ז. תלמיד" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="student-birthdate">תאריך לידה <span class="required">*</span></label>
+                                <input type="date" id="student-birthdate" name="תאריך לידה" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="student-class-health">כיתה <span class="required">*</span></label>
+                                <input type="text" id="student-class-health" name="כיתה" required>
+                            </div>
+                        </div>
+                        
+                        <h4 class="serif">פרטי קשר</h4>
+                        <div class="form-group">
+                            <label for="parent-name-health">שם ההורה <span class="required">*</span></label>
+                            <input type="text" id="parent-name-health" name="שם הורה" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parent-phone-health">טלפון ליצירת קשר <span class="required">*</span></label>
+                                <input type="tel" id="parent-phone-health" name="טלפון הורה" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency-phone">טלפון נוסף לחירום <span class="required">*</span></label>
+                                <input type="tel" id="emergency-phone" name="טלפון חירום" required>
+                            </div>
+                        </div>
+                        
+                        <h4 class="serif">מידע רפואי</h4>
+                        <div class="form-group">
+                            <label>האם התלמיד/ה סובל/ת מאלרגיה כלשהי? <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="יש אלרגיה" value="לא" required> לא</label>
+                                <label><input type="radio" name="יש אלרגיה" value="כן"> כן</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="allergies-detail">אם כן, פרט/י את סוג האלרגיה ואת האמצעים הנדרשים:</label>
+                            <textarea id="allergies-detail" name="פרטי אלרגיה" placeholder="לדוגמה: אלרגיה לבוטנים - יש בבית הספר מזרק אפיפן"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>האם התלמיד/ה נוטל/ת תרופות באופן קבוע? <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="נוטל תרופות" value="לא" required> לא</label>
+                                <label><input type="radio" name="נוטל תרופות" value="כן"> כן</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="medications-detail">אם כן, פרט/י את שם התרופה ואופן הנטילה:</label>
+                            <textarea id="medications-detail" name="פרטי תרופות"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>האם יש הגבלה על פעילות גופנית? <span class="required">*</span></label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="הגבלה גופנית" value="לא" required> לא</label>
+                                <label><input type="radio" name="הגבלה גופנית" value="כן"> כן</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="physical-limits">אם כן, פרט/י את סוג ההגבלה:</label>
+                            <textarea id="physical-limits" name="פרטי הגבלה"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="medical-conditions">מצבים רפואיים נוספים שחשוב שביה"ס יידע:</label>
+                            <textarea id="medical-conditions" name="מצבים נוספים" placeholder="השאר ריק אם אין"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="family-doctor">שם רופא המשפחה וקופ"ח:</label>
+                            <input type="text" id="family-doctor" name="רופא משפחה">
+                        </div>
+                        
+                        <h4 class="serif">אישורים</h4>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="health-confirm-1" name="הפרטים נכונים" required value="כן">
+                            <label for="health-confirm-1">אני מצהיר/ה כי הפרטים שמסרתי לעיל נכונים ומדויקים <span class="required">*</span></label>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="health-confirm-2" name="מתחייב לעדכן" required value="כן">
+                            <label for="health-confirm-2">אני מתחייב/ת לעדכן את בית הספר בכל שינוי במצב הבריאותי של בני/בתי <span class="required">*</span></label>
+                        </div>
+                        
+                        <h4 class="serif">חתימה ותאריך</h4>
+                        <div class="form-group">
+                            <label for="health-date">תאריך <span class="required">*</span></label>
+                            <input type="date" id="health-date" name="תאריך הצהרה" required>
+                        </div>
+                        <div class="form-group">
+                            <label>חתימה דיגיטלית <span class="required">*</span></label>
+                            <div class="signature-pad-container">
+                                <canvas id="health-signature-pad" class="signature-pad"></canvas>
+                                <input type="hidden" name="חתימה" id="health-signature-data">
+                            </div>
+                            <button type="button" class="clear-btn" onclick="clearHealthSignature()">נקה חתימה</button>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">שליחת הצהרת בריאות</button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="footer">
+            <div class="footer-logo serif">
+                <span class="lang-he">בית הספר יסודי התורה</span>
+                <span class="lang-fr-content">École Yesodei HaTorah</span>
+                <span class="lang-en-content">Yesodei HaTorah School</span>
+            </div>
+            <div class="footer-tagline">
+                <span class="lang-he">רעננה</span>
+                <span class="lang-fr-content">Ra'anana</span>
+                <span class="lang-en-content">Ra'anana</span>
+            </div>
+            <div class="footer-blessing serif">
+                <span class="lang-he">בתקווה לשיתוף פעולה פורה ומוצלח<br>סיעתא דשמיא ורב נחת</span>
+                <span class="lang-fr-content">Dans l'espoir d'une collaboration fructueuse<br>Siyata DiShmaya et beaucoup de Nachat</span>
+                <span class="lang-en-content">Hoping for fruitful and successful cooperation<br>With Siyata DiShmaya and much Nachas</span>
+            </div>
+            <div class="management serif">
+                <span class="lang-he">ההנהלה</span>
+                <span class="lang-fr-content">La Direction</span>
+                <span class="lang-en-content">The Administration</span>
+            </div>
+            <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(201, 169, 97, 0.2);">
+                <a href="admin.html" style="color: rgba(224, 201, 136, 0.6); text-decoration: none; font-size: 0.85em; letter-spacing: 1px; transition: color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(224, 201, 136, 0.6)'">
+                    🔐 <span class="lang-he">כניסת מנהלים</span><span class="lang-fr-content">Accès Administration</span><span class="lang-en-content">Admin Access</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setLang(lang) {
+            const body = document.body;
+            document.getElementById('btn-he').classList.remove('active');
+            document.getElementById('btn-fr').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            
+            body.classList.remove('lang-fr', 'lang-en');
+            
+            if (lang === 'fr') {
+                body.classList.add('lang-fr');
+                body.setAttribute('dir', 'ltr');
+                body.setAttribute('lang', 'fr');
+                document.getElementById('btn-fr').classList.add('active');
+            } else if (lang === 'en') {
+                body.classList.add('lang-en');
+                body.setAttribute('dir', 'ltr');
+                body.setAttribute('lang', 'en');
+                document.getElementById('btn-en').classList.add('active');
+            } else {
+                body.setAttribute('dir', 'rtl');
+                body.setAttribute('lang', 'he');
+                document.getElementById('btn-he').classList.add('active');
+            }
+            localStorage.setItem('preferredLang', lang);
+        }
+        
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('preferredLang');
+            if (saved) setLang(saved);
+        });
+        
+        function initSignaturePad(canvasId, hiddenInputId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const hiddenInput = document.getElementById(hiddenInputId);
+            
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = 160;
+                ctx.strokeStyle = '#1a2952';
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            let drawing = false, lastX = 0, lastY = 0;
+            
+            function getCoords(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            }
+            
+            function startDrawing(e) {
+                e.preventDefault();
+                drawing = true;
+                const coords = getCoords(e);
+                lastX = coords.x;
+                lastY = coords.y;
+            }
+            
+            function draw(e) {
+                if (!drawing) return;
+                e.preventDefault();
+                const coords = getCoords(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(coords.x, coords.y);
+                ctx.stroke();
+                lastX = coords.x;
+                lastY = coords.y;
+                hiddenInput.value = canvas.toDataURL();
+            }
+            
+            function stopDrawing() { drawing = false; }
+            
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            canvas.addEventListener('touchstart', startDrawing);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            return {
+                clear: function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    hiddenInput.value = '';
+                }
+            };
+        }
+        
+        let signaturePad, healthSignaturePad;
+        
+        window.addEventListener('load', function() {
+            signaturePad = initSignaturePad('signature-pad', 'signature-data');
+            healthSignaturePad = initSignaturePad('health-signature-pad', 'health-signature-data');
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('signature-date').value = today;
+            document.getElementById('health-date').value = today;
+        });
+        
+        function clearSignature() { if (signaturePad) signaturePad.clear(); }
+        function clearHealthSignature() { if (healthSignaturePad) healthSignaturePad.clear(); }
+        
+        document.getElementById('signature-form').addEventListener('submit', function(e) {
+            if (!document.getElementById('signature-data').value) {
+                e.preventDefault();
+                alert('אנא חתום/י על הטופס לפני השליחה');
+                return false;
+            }
+        });
+        
+        document.getElementById('health-form').addEventListener('submit', function(e) {
+            if (!document.getElementById('health-signature-data').value) {
+                e.preventDefault();
+                alert('אנא חתום/י על הטופס לפני השליחה');
+                return false;
+            }
+        });
+        
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 60;
+                    const targetPos = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top: targetPos, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

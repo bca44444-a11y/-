@@ -1701,7 +1701,11 @@
             </div>
             
         </div>
-        
+        <form id="health-form" name="health-form" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="health-form">
+    <p style="display:none;"><label>אל תמלא: <input name="bot-field"></label></p>
+    <!-- שאר שדות הטופס -->
+</form>
         <div class="footer">
             <div class="footer-logo serif">
                 <span class="lang-he">בית הספר יסודי התורה</span>
@@ -1850,16 +1854,17 @@
                 return false;
             }
         });
-       <form id="signature-form" name="signature-form" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-    <input type="hidden" name="form-name" value="signature-form">
-    <p style="display:none;"><label>אל תמלא: <input name="bot-field"></label></p>
-    <!-- שאר שדות הטופס -->
+   
            
         document.getElementById('health-form').addEventListener('submit', function(e) {
             if (!document.getElementById('health-signature-data').value) {
                 e.preventDefault();
                 alert('אנא חתום/י על הטופס לפני השליחה');
                 return false;
+                    <form id="signature-form" name="signature-form" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="signature-form">
+    <p style="display:none;"><label>אל תמלא: <input name="bot-field"></label></p>
+    <!-- שאר שדות הטופס -->
             }
         });
         
